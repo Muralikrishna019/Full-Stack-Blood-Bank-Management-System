@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | BloodConnect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard">
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <div class="container">
+        <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
+        <p>Manage blood bank operations</p>
+      </div>
+    </header>
+
+    <main class="dashboard-main container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-lg">
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-list"></i> Blood Requests</h2>
+            <button onclick="loadRequests()" class="btn btn-secondary btn-sm">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+          <div id="requestList" class="request-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-warehouse"></i> Blood Inventory</h2>
+            <button onclick="loadInventory()" class="btn btn-primary btn-sm">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+          <div id="inventoryList" class="inventory-grid"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="dashboard-footer">
+      <div class="container">
+        <p>&copy; 2025 BloodConnect Management System</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

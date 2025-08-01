@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donor Dashboard | BloodConnect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="dashboard donor-dashboard">
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <div class="container">
+        <div class="dashboard-header-content">
+          <div>
+            <h1><i class="fas fa-hand-holding-heart"></i> Donor Dashboard</h1>
+            <p>Thank you for your life-saving contribution!</p>
+          </div>
+          <button id="logoutBtn" class="btn btn-outline">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main container">
+      <div class="dashboard-grid">
+        <div class="card">
+          <h2><i class="fas fa-tint"></i> Make a Donation</h2>
+          <form id="donationForm" class="donation-form">
+            <div class="form-group">
+              <label for="bloodType"><i class="fas fa-heartbeat"></i> Blood Type</label>
+              <select id="bloodType" required>
+                <option value="" disabled selected>Select your blood type</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="donationDate"><i class="fas fa-calendar-alt"></i> Donation Date</label>
+              <input type="date" id="donationDate" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Record Donation
+            </button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-warehouse"></i> Blood Inventory</h2>
+            <button id="refreshInventoryBtn" class="btn btn-secondary">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+          <div id="inventoryList" class="inventory-grid"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="main-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>BloodConnect</span>
+          </div>
+          <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+        <div class="copyright">
+          <p>&copy; 2023 BloodConnect. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return window.location.href = 'login.html';
+      }
+
+      document.getElementById('logoutBtn').addEventListener('click', function () {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userRole');
+        window.location.href = 'index.html';
+      });
+
+      document.getElementById('donationForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const bloodType = document.getElementById('bloodType').value;
+        const donationDate = document.getElementById('donationDate').value;
+
+        try {
+          const response = await fetch('http://localhost:5000/api/donor/donate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ bloodType, donationDate })
+          });
+
+          if (!response.ok) throw new Error('Failed to submit');
+
+          const data = await response.json();
+          alert('Donation recorded successfully!');
+        } catch (err) {
+          console.error(err);
+          alert('Error recording donation.');
+        }
+      });
+
+      // Placeholder for inventory
+      document.getElementById('refreshInventoryBtn').addEventListener('click', loadInventory);
+      function loadInventory() {
+        document.getElementById('inventoryList').innerHTML = '<p>Inventory loading...</p>';
+        // Backend inventory fetch can be added here
+      }
+    });
+  </script>
+</body>
+</html>

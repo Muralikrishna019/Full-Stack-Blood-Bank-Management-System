@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BloodConnect | Save Lives</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <i class="fas fa-heartbeat"></i>
+          <span>BloodConnect</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="login.html?redirect=donor" class="nav-link"><i class="fas fa-hand-holding-heart"></i> Donor</a></li>
+          <li><a href="login.html?redirect=recipient" class="nav-link"><i class="fas fa-hospital-user"></i> Recipient</a></li>
+          <li><a href="login.html?redirect=admin" class="nav-link"><i class="fas fa-user-shield"></i> Admin</a></li>
+          <li class="auth-links">
+            <a href="login.html" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="register.html" class="btn btn-secondary"><i class="fas fa-user-plus"></i> Register</a>
+          </li>
+        </ul>
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+      
+      <div class="hero-content">
+        <h1>Connecting Donors With Those In Need</h1>
+        <p>Every drop counts. Join our life-saving community today.</p>
+        <div class="cta-buttons flex gap-md justify-center">
+          <a href="login.html?redirect=donor" class="btn btn-primary btn-lg"><i class="fas fa-tint"></i> Become a Donor</a>
+          <a href="login.html?redirect=recipient" class="btn btn-secondary btn-lg"><i class="fas fa-hand-holding-medical"></i> Request Blood</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard Cards Section -->
+  <section class="section bg-light">
+    <div class="container">
+      <h2 class="text-center"><i class="fas fa-tachometer-alt"></i> Access Your Dashboard</h2>
+      <div class="dashboard-cards">
+        <a href="login.html?redirect=donor" class="dashboard-card">
+          <i class="fas fa-hand-holding-heart"></i>
+          <h3>Donor Dashboard</h3>
+          <p>Record your donations and track your contributions</p>
+          <span class="btn btn-primary">Login as Donor</span>
+        </a>
+        <a href="login.html?redirect=recipient" class="dashboard-card">
+          <i class="fas fa-hospital-user"></i>
+          <h3>Recipient Dashboard</h3>
+          <p>Request blood and track your requests</p>
+          <span class="btn btn-primary">Login as Recipient</span>
+        </a>
+        <a href="login.html?redirect=admin" class="dashboard-card">
+          <i class="fas fa-user-shield"></i>
+          <h3>Admin Dashboard</h3>
+          <p>Manage blood bank operations and requests</p>
+          <span class="btn btn-primary">Login as Admin</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <i class="fas fa-users"></i>
+          <div class="stat-number">5,000+</div>
+          <div class="stat-label">Registered Users</div>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-tint"></i>
+          <div class="stat-number">10,000+</div>
+          <div class="stat-label">Units Donated</div>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-heartbeat"></i>
+          <div class="stat-number">8,000+</div>
+          <div class="stat-label">Lives Saved</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>BloodConnect</span>
+          </div>
+          <p>Dedicated to connecting blood donors with those in need, making a difference one drop at a time.</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="login.html?redirect=donor"><i class="fas fa-chevron-right"></i> Donor Portal</a></li>
+            <li><a href="login.html?redirect=recipient"><i class="fas fa-chevron-right"></i> Recipient Portal</a></li>
+            <li><a href="login.html?redirect=admin"><i class="fas fa-chevron-right"></i> Admin Dashboard</a></li>
+            <li><a href="register.html"><i class="fas fa-chevron-right"></i> Register</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact Us</h4>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> 123 BloodConnect St, Life City</li>
+            <li><i class="fas fa-phone"></i> +91 9848084649</li>
+            <li><i class="fas fa-envelope"></i> info@bloodconnect.com</li>
+          </ul>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 BloodConnect. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

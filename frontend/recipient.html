@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipient Dashboard | BloodConnect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard">
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <div class="container">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1><i class="fas fa-hospital-user"></i> Recipient Dashboard</h1>
+            <p>Request the blood type you need</p>
+          </div>
+          <button id="logoutBtn" class="btn btn-sm btn-secondary">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main container">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Blood Request Form -->
+        <div class="card">
+          <h2><i class="fas fa-tint"></i> Blood Request</h2>
+          <form id="requestForm" class="space-y-4">
+            <div class="form-group">
+              <label for="bloodType"><i class="fas fa-heartbeat"></i> Blood Type Needed</label>
+              <select id="bloodType" class="w-full" required>
+                <option value="" disabled selected>Select blood type</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="location"><i class="fas fa-map-marker-alt"></i> Location</label>
+              <input type="text" id="location" placeholder="Enter your city or hospital" class="w-full" required>
+            </div>
+
+            <div class="form-group">
+              <label for="urgency"><i class="fas fa-exclamation-triangle"></i> Urgency</label>
+              <select id="urgency" class="w-full" required>
+                <option value="normal">Normal</option>
+                <option value="urgent">Urgent</option>
+                <option value="emergency">Emergency</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-full">
+              <i class="fas fa-bell"></i> Submit Request
+            </button>
+          </form>
+        </div>
+
+        <!-- Request History -->
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-history"></i> Your Requests</h2>
+            <button id="refreshRequestsBtn" class="btn btn-sm btn-secondary">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+          <div id="requestHistory">
+            <div class="loading-state">
+              <i class="fas fa-spinner fa-spin"></i> Loading your requests...
+            </div>
+          </div>
+        </div>
+
+        <!-- Blood Inventory -->
+        <div class="card md:col-span-2">
+          <div class="card-header">
+            <h2><i class="fas fa-warehouse"></i> Blood Inventory</h2>
+            <button id="refreshInventoryBtn" class="btn btn-primary btn-sm">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+          <div id="inventoryList">
+            <div class="loading-state">
+              <i class="fas fa-spinner fa-spin"></i> Loading inventory...
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="dashboard-footer">
+      <div class="container">
+        <p>Need immediate assistance? <a href="tel:+1234567890"><i class="fas fa-phone"></i> Call Emergency Support</a></p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
