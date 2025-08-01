@@ -1,4 +1,4 @@
-const API = 'http://localhost:5000/api';
+const API = 'https://full-stack-blood-bank-management-system.onrender.com/api';
 let token = localStorage.getItem('token');
 
 const ENDPOINTS = {
