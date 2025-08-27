@@ -4,8 +4,8 @@ let token = localStorage.getItem('token');
 const ENDPOINTS = {
   REGISTER: '/auth/register',
   LOGIN: '/auth/login',
-  DONATIONS: '/donations',
-  REQUESTS: '/requests',
+  DONATIONS: '/donor/donate', // <-- Fixed endpoint
+  REQUESTS: '/recipient/request',
   INVENTORY: '/inventory'
 };
 
@@ -145,17 +145,19 @@ const handleLogin = async (e) => {
   }
 };
 
-// ==================== DONOR FUNCTIONS ====================
 const handleDonation = async (e) => {
   e.preventDefault();
   const form = e.target;
   const submitBtn = form.querySelector('button[type="submit"]');
-  
+  const bloodType = form.bloodType.value;
+  const donationDate = form.donationDate.value;
+
   try {
-    setLoading(submitBtn, true, 'Processing...');
+    setLoading(submitBtn, true, 'Recording...');
     
-    if (!form.bloodType.value) {
-      throw new Error('Please select your blood type');
+    // Validate inputs (only check if fields are filled, not date validity)
+    if (!bloodType || !donationDate) {
+      throw new Error('Please fill in all required fields');
     }
 
     const response = await fetch(`${API}${ENDPOINTS.DONATIONS}`, {
@@ -165,23 +167,30 @@ const handleDonation = async (e) => {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        bloodType: form.bloodType.value,
-        donationDate: form.donationDate.value, // Make sure this is included
-        units: 1
+        bloodType,
+        donationDate,
+        quantity: 1
       })
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Donation failed');
+      const errorMsg = data.error || data.message || 'Failed to record donation';
+      throw new Error(errorMsg);
     }
 
-    showAlert('Thank you for your donation!', 'success');
+    showAlert('Donation recorded successfully! Thank you for your life-saving contribution!', 'success');
     form.reset();
-    loadInventory();
+    
+    // Refresh inventory if on a page that displays it
+    if (window.location.pathname.includes('admin.html') || 
+        window.location.pathname.includes('donor.html') || 
+        window.location.pathname.includes('bloodInventory.html')) {
+      loadInventory();
+    }
   } catch (error) {
-    console.error('Donation error:', error); // Add this for debugging
-    showAlert(error.message);
+    showAlert(error.message || 'Error recording donation. Please try again.');
   } finally {
     setLoading(submitBtn, false);
   }
@@ -235,58 +244,33 @@ const handleRequest = async (e) => {
 const loadInventory = async () => {
   const container = document.getElementById('inventoryList');
   if (!container) return;
-  
-  try {
-    container.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading inventory...</div>';
+  container.innerHTML = '<p>Inventory loading...</p>';
 
+  try {
     const response = await fetch(`${API}${ENDPOINTS.INVENTORY}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${token}`
       }
     });
+    const data = await response.json();
 
     if (!response.ok) {
-      throw new Error('Failed to fetch inventory');
+      throw new Error(data.error || 'Failed to load inventory');
     }
 
-    const data = await response.json();
-    const inventory = data.data || data;
-    
-    if (!inventory || inventory.length === 0) {
-      container.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i> No inventory data</div>';
-      return;
+    // Render inventory
+    if (Array.isArray(data.data) && data.data.length > 0) {
+      container.innerHTML = data.data.map(item => `
+        <div class="inventory-item">
+          <span class="blood-type">${item.bloodType}</span>
+          <span class="quantity">${item.quantity} units</span>
+        </div>
+      `).join('');
+    } else {
+      container.innerHTML = '<p>No inventory data available.</p>';
     }
-    
-    // Apply filter if exists
-    const filter = document.getElementById('bloodTypeFilter')?.value || 'all';
-    const filteredInventory = filter === 'all' 
-      ? inventory 
-      : inventory.filter(item => item.bloodType === filter);
-
-    container.innerHTML = filteredInventory.map(item => `
-      <div class="blood-card">
-        <div class="blood-type">${item.bloodType}</div>
-        <div class="stock-amount">${item.quantity} units</div>
-        <div class="progress-bar">
-          <div class="progress" style="width: ${Math.min(100, (item.quantity / 20) * 100)}%"></div>
-        </div>
-        <div class="stock-status ${item.quantity < 5 ? 'status-low' : 'status-good'}">
-          ${item.quantity < 5 ? 'Low Stock' : 'In Stock'}
-        </div>
-      </div>
-    `).join('');
   } catch (error) {
-    console.error('Inventory error:', error);
-    container.innerHTML = `
-      <div class="error-state">
-        <i class="fas fa-exclamation-triangle"></i>
-        ${error.message || 'Failed to load inventory'}
-        <button onclick="loadInventory()" class="btn btn-sm btn-secondary">
-          <i class="fas fa-sync-alt"></i> Retry
-        </button>
-      </div>
-    `;
+    container.innerHTML = `<p class="error">${error.message}</p>`;
   }
 };
 
@@ -439,9 +423,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('requestForm')?.addEventListener('submit', handleRequest);
 
   // Inventory refresh buttons
-  document.querySelectorAll('#viewInventoryBtn, [onclick="loadInventory()"]').forEach(btn => {
-    btn.addEventListener('click', loadInventory);
-  });
+  document.getElementById('refreshInventoryBtn')?.addEventListener('click', loadInventory);
+
+  // Load inventory on page load for donor dashboard
+  if (window.location.pathname.includes('donor.html')) {
+    loadInventory();
+  }
 
   // Blood type filter
   document.getElementById('bloodTypeFilter')?.addEventListener('change', loadInventory);
@@ -467,6 +454,12 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
     localStorage.removeItem('userName');
-    window.location.href = 'index.html';
+    window.location.href = ('index.html');
   });
 });
+
+
+function updateInventory() {
+  loadInventory();
+}
+window.updateInventory = updateInventory;
